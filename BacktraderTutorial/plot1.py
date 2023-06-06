@@ -28,9 +28,11 @@ class MyObs2(bt.observers.TimeReturn):
     lines = ('timereturn',)
     plotlines = dict(timereturn=dict(color='red'))
 
+
+
 class MyObs3(bt.observers.Benchmark):
     lines = ('benchmark',)
-    plotlines = dict()
+    plotlines = {}
 
 
 

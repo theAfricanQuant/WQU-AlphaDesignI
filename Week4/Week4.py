@@ -19,13 +19,13 @@ f = web.DataReader('MCD', 'yahoo', start, end)
 # Function to calculate
 # Moving Average
 def MA(df, n):
-    MA = pd.Series(pd.rolling_mean(df['Close'], n), name='MA_'+str(n))
+    MA = pd.Series(pd.rolling_mean(df['Close'], n), name=f'MA_{str(n)}')
     df = df.join(MA)
     return(df)
 
 # Exponential Moving Average
 def EMA(df, n):
-    EMA = pd.Series(pd.rolling_mean(df['Close'], n), name='EMA_'+str(n))
+    EMA = pd.Series(pd.rolling_mean(df['Close'], n), name=f'EMA_{str(n)}')
     df = df.join(EMA)
     return(df)
 
@@ -70,10 +70,10 @@ def BBands(df, n):
     MA = pd.Series(pd.rolling_mean(df['Close'], n))
     MSD = pd.Series(pd.rolling_std(df['Close'], n))
     b1 = MA+1.5*MSD
-    B1 = pd.Series(b1, name = 'BollingerB+'+str(n))
+    B1 = pd.Series(b1, name=f'BollingerB+{str(n)}')
     df = df.join(B1)
     b2 = MA-1.5*MSD
-    B2 = pd.Series(b2, name = 'BollingerB_'+str(n))
+    B2 = pd.Series(b2, name=f'BollingerB_{str(n)}')
     df = df.join(B2)
     return df
     

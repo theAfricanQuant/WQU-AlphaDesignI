@@ -34,9 +34,6 @@ class TheStrategy(bt.Strategy):
     )
 
     def notify_order(self, order):
-        if order.status == order.Completed:
-            pass
-
         if not order.alive():
             self.order = None  # indicate no order is pending
 
@@ -98,7 +95,7 @@ def runstrat(args=None):
     cerebro = bt.Cerebro()
     cerebro.broker.setcash(args.cash)
 
-    dkwargs = dict()
+    dkwargs = {}
     if args.fromdate is not None:
         dkwargs['fromdate'] = datetime.strptime(args.fromdate, '%Y-%m-%d')
     if args.todate is not None:
@@ -119,8 +116,8 @@ def runstrat(args=None):
     if args.plot:
         pkwargs = dict(style='bar')
         if args.plot is not True:  # evals to True but is not True
-            npkwargs = eval('dict(' + args.plot + ')')  # args were passed
-            pkwargs.update(npkwargs)
+            npkwargs = eval(f'dict({args.plot})')
+            pkwargs |= npkwargs
 
         cerebro.plot(**pkwargs)
 
@@ -168,10 +165,7 @@ def parse_args(pargs=None):
                               '\n'
                               '  --plot style="candle" (to plot candles)\n'))
 
-    if pargs is not None:
-        return parser.parse_args(pargs)
-
-    return parser.parse_args()
+    return parser.parse_args(pargs) if pargs is not None else parser.parse_args()
 
 
 if __name__ == '__main__':

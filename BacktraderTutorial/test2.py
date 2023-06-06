@@ -62,7 +62,7 @@ class MyStrategy(bt.Strategy):
 
     def log(self, txt, dt=None):
         dt = dt or self.data.datetime.date(0)
-        print('%s, %s,' %(dt.isoformat(),txt))
+        print(f'{dt.isoformat()}, {txt},')
 
     def notify_order(self, order):
         if order.status in [order.Submitted, order.Accepted]:
@@ -120,11 +120,10 @@ class MyStrategy(bt.Strategy):
                 price = self.data.close*(1.0 - self.p.perc1/100.0)
                 self.buy(exectype=bt.Order.Limit, price=price, valid=value)
 
+                txt = 'BUY CREATE, exectype Limit, price %.2f, value %s'
                 if self.p.valid:
-                    txt = 'BUY CREATE, exectype Limit, price %.2f, value %s'
                     self.log(txt %(price, value.strftime('%Y-%m-%d')))
                 else:
-                    txt = 'BUY CREATE, exectype Limit, price %.2f, value %s'
                     self.log(txt % price)
 
 
@@ -163,7 +162,7 @@ def getdata(args):
         yahoo_unreversed=btfeeds.YahooFinanceCSVData
     )
 
-    dfkwargs = dict()
+    dfkwargs = {}
     if args.csvformat == 'yahoo_unreversed':
         dfkwargs['reverse'] = True
 

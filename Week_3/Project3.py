@@ -18,7 +18,7 @@ class TestStrategy(bt.Strategy):
     def log(self, txt, dt=None, doprint=False):
         if self.params.printlog or doprint:
             dt = dt or self.datas[0].datetime.date(0)
-            print('%s, %s' %(dt.isoformat(), txt))
+            print(f'{dt.isoformat()}, {txt}')
             
     def __init__(self):
         self.dataclose = self.datas[0].close
@@ -71,15 +71,15 @@ class TestStrategy(bt.Strategy):
         self.log('Close, %.2f' %self.dataclose[0])
         if self.order:
             return
-        
-        if not self.position:
-            if self.dataclose[0] > self.sma[0]:
-                self.log("BUY CREATE, %2f" %self.dataclose[0])
-                self.order = self.buy()
-        else:
+
+        if self.position:
             if self.dataclose[0] < self.sma[0]:
                 self.log('Sell create, %.2f' %self.dataclose[0])
                 self.order = self.sell()
+
+        elif self.dataclose[0] > self.sma[0]:
+            self.log("BUY CREATE, %2f" %self.dataclose[0])
+            self.order = self.buy()
         
             
         
